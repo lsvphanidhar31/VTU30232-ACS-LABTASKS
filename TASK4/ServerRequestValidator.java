@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class  FactoryTemperatureMonitor{
+public class  ServerRequestValidator{
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -9,7 +9,7 @@ public class  FactoryTemperatureMonitor{
         Stack<Character> stack = new Stack<>();
 
         for (char ch : s.toCharArray()) {
-            if (ch == '(' || ch == '[' || ch == '{' || ch == '<') {
+            if (ch == '(' || ch == '[' || ch == '{' || ch == '<') {ver
                 stack.push(ch);
             } else if (ch == ')' || ch == ']' || ch == '}' || ch == '>') {
 
