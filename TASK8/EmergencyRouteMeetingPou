@@ -1,0 +1,107 @@
+import java.util.*;
+
+public class EmergencyRouteMeetingPoint {
+
+    static class Node {
+        int data;
+        Node left, right;
+
+        Node(int data) {
+            this.data = data;
+        }
+    }
+
+    static Node buildTree(int[] values) {
+        if (values.length == 0 || values[0] == -1) {
+            return null;
+        }
+
+        Node root = new Node(values[0]);
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(root);
+
+        int i = 1;
+
+        while (i < values.length && !queue.isEmpty()) {
+            Node current = queue.poll();
+
+            if (i < values.length && values[i] != -1) {
+                current.left = new Node(values[i]);
+                queue.offer(current.left);
+            }
+            i++;
+
+            if (i < values.length && values[i] != -1) {
+                current.right = new Node(values[i]);
+                queue.offer(current.right);
+            }
+            i++;
+        }
+
+        return root;
+    }
+
+    static boolean findPath(Node root, int value, List<Node> path) {
+        if (root == null) {
+            return false;
+        }
+
+        path.add(root);
+
+        if (root.data == value) {
+            return true;
+        }
+
+        if (findPath(root.left, value, path) ||
+            findPath(root.right, value, path)) {
+            return true;
+        }
+
+        path.remove(path.size() - 1);
+        return false;
+    }
+
+    static Node findLCA(Node root, int node1, int node2) {
+        List<Node> path1 = new ArrayList<>();
+        List<Node> path2 = new ArrayList<>();
+
+        if (!findPath(root, node1, path1) ||
+            !findPath(root, node2, path2)) {
+            return null;
+        }
+
+        Node lca = null;
+        int i = 0;
+
+        while (i < path1.size() && i < path2.size()
+                && path1.get(i) == path2.get(i)) {
+            lca = path1.get(i);
+            i++;
+        }
+
+        return lca;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        int[] values = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            values[i] = sc.nextInt();
+        }
+
+        int node1 = sc.nextInt();
+        int node2 = sc.nextInt();
+
+        Node root = buildTree(values);
+        Node lca = findLCA(root, node1, node2);
+
+        if (lca != null) {
+            System.out.println("LCA = " + lca.data);
+        }
+
+        sc.close();
+    }
+}
